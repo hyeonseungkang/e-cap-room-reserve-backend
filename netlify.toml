@@ -1,0 +1,14 @@
+[build]
+command = "npm run build"
+publish = "public"
+
+[functions]
+# Nest CLI가 컴파일한 결과물 전체를 Lambda 배포 패키지에 포함시킵니다.
+included_files = ["dist/**"]
+
+[[redirects]]
+# 클라이언트가 /api/users 로 요청하면 내부적으로 Netlify Function 라우터로 넘겨줍니다.
+from = "/api/*"
+to = "/.netlify/functions/api/:splat"
+status = 200
+force = true

@@ -13,9 +13,11 @@ import { Reservation } from './user/entity/reservation.entity';
 import { User } from './user/entity/user.entity';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     MeetingRoomModule,
     AdminModule,
     UserModule,

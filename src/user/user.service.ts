@@ -138,6 +138,11 @@ export class UserService {
         '선택하신 시간대에 이미 회의실이 예약되어 있습니다.',
       );
     }
+    if (reservation.reservation_status !== 'RESERVED') {
+      throw new BadRequestException(
+        '진행 중인 예약 외에는 수정할 수 없습니다.',
+      );
+    }
     Object.assign(reservation, dto);
     return this.reservationRepository.save(reservation);
   }
@@ -149,7 +154,7 @@ export class UserService {
     }
   }
 
-  @Cron('*/1 * * * *')
+  @Cron('0 * * * * *')
   async makeReservationCompleted() {
     return this.reservationRepository.update(
       {

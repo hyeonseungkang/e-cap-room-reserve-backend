@@ -1,5 +1,5 @@
 CREATE TABLE users (
-                      user_id NUMBER PRIMARY KEY,
+                      user_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
                       name VARCHAR2(50),
                       email VARCHAR2(100),
                       password VARCHAR2(100),
@@ -12,7 +12,7 @@ CREATE TABLE users (
 
 
 CREATE TABLE admins (
-                       admin_id NUMBER PRIMARY KEY,
+                       admin_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
                        name VARCHAR2(50),
                        email VARCHAR2(100),
                        password VARCHAR2(100),
@@ -23,7 +23,7 @@ CREATE TABLE admins (
 
 
 CREATE TABLE meeting_rooms (
-                              room_id NUMBER PRIMARY KEY,
+                              room_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
                               room_name VARCHAR2(100),
                               location VARCHAR2(100),
                               capacity NUMBER,
@@ -36,7 +36,7 @@ CREATE TABLE meeting_rooms (
 
 
 CREATE TABLE reservations (
-                             reservation_id NUMBER PRIMARY KEY,
+                             reservation_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
                              user_id NUMBER,
                              room_id NUMBER,
                              start_time TIMESTAMP,
@@ -55,7 +55,7 @@ CREATE TABLE reservations (
 
 
 CREATE TABLE room_equipment (
-                               equipment_id NUMBER PRIMARY KEY,
+                               equipment_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
                                room_id NUMBER,
                                equipment_name VARCHAR2(100),
                                quantity NUMBER,
@@ -66,7 +66,7 @@ CREATE TABLE room_equipment (
 
 
 CREATE TABLE usage_logs (
-                           usage_id NUMBER PRIMARY KEY,
+                           usage_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
                            reservation_id NUMBER UNIQUE,
                            check_in_time TIMESTAMP,
                            check_out_time TIMESTAMP,
@@ -78,7 +78,7 @@ CREATE TABLE usage_logs (
 
 
 CREATE TABLE penalty_policies (
-                                 penalty_policy_id NUMBER PRIMARY KEY,
+                                 penalty_policy_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
                                  penalty_type VARCHAR2(50),
                                  penalty_reason VARCHAR2(255),
                                  restriction_days NUMBER,
@@ -87,7 +87,7 @@ CREATE TABLE penalty_policies (
 
 
 CREATE TABLE penalty_history (
-                                penalty_history_id NUMBER PRIMARY KEY,
+                                penalty_history_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
                                 reservation_id NUMBER,
                                 start_date TIMESTAMP,
                                 end_date TIMESTAMP,
@@ -99,7 +99,7 @@ CREATE TABLE penalty_history (
 
 
 CREATE TABLE cancellation_logs (
-                                  cancellation_id NUMBER PRIMARY KEY,
+                                  cancellation_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
                                   reservation_id NUMBER,
                                   cancelled_at TIMESTAMP,
                                   cancel_reason VARCHAR2(255),
@@ -111,7 +111,7 @@ CREATE TABLE cancellation_logs (
 
 
 CREATE TABLE questions (
-                          question_id NUMBER PRIMARY KEY,
+                          question_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
                           user_id NUMBER,
                           title VARCHAR2(200),
                           content CLOB,
@@ -124,7 +124,7 @@ CREATE TABLE questions (
 
 
 CREATE TABLE answers (
-                        answer_id NUMBER PRIMARY KEY,
+                        answer_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
                         admin_id NUMBER,
                         content CLOB,
                         created_at TIMESTAMP,
@@ -135,7 +135,7 @@ CREATE TABLE answers (
 
 
 CREATE TABLE qna_mappings (
-                             mapping_id NUMBER PRIMARY KEY,
+                             mapping_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
                              question_id NUMBER UNIQUE,
                              answer_id NUMBER UNIQUE,
                              created_at TIMESTAMP,
@@ -150,7 +150,7 @@ CREATE TABLE qna_mappings (
 
 
 CREATE TABLE room_maintenance_logs (
-                                      maintenance_id NUMBER PRIMARY KEY,
+                                      maintenance_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
                                       room_id NUMBER,
                                       admin_id NUMBER,
                                       maintenance_type VARCHAR2(50),

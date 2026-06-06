@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MoreThanOrEqual, LessThanOrEqual, Repository, Not, Or } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 import { User } from './entity/user.entity';
 import { Reservation } from './entity/reservation.entity';
 import { MeetingRoom } from '../meeting-room/entity/meeting-room.entity';
@@ -25,9 +26,17 @@ export class UserService {
 
   // ── User CRUD ──────────────────────────────────────────────────────────────
 
-  create(dto: CreateUserDto): Promise<User> {
-    const user = this.userRepository.create(dto);
+  async create(dto: CreateUserDto): Promise<User> {
+    const data = { ...dto };
+    if (data.password) {
+      data.password = await bcrypt.hash(data.password, 10);
+    }
+    const user = this.userRepository.create(data);
     return this.userRepository.save(user);
+  }
+
+  findByEmail(email: string): Promise<User | null> {
+    return this.userRepository.findOne({ where: { email } });
   }
 
   findAll(): Promise<User[]> {
@@ -49,7 +58,11 @@ export class UserService {
 
   async update(user_id: number, dto: UpdateUserDto): Promise<User> {
     const user = await this.findOne(user_id);
-    Object.assign(user, dto);
+    const data = { ...dto };
+    if (data.password) {
+      data.password = await bcrypt.hash(data.password, 10);
+    }
+    Object.assign(user, data);
     return this.userRepository.save(user);
   }
 

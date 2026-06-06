@@ -8,5 +8,11 @@ export class UpdateAdminDto {
   email?: string;
 
   @ApiProperty()
+  password?: string;
+
+  @ApiProperty()
   department?: string;
+
+  @ApiProperty()
+  is_active?: number;
 }

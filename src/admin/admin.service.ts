@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 import { Admin } from './entity/admin.entity';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
@@ -12,9 +13,17 @@ export class AdminService {
     private readonly adminRepository: Repository<Admin>,
   ) {}
 
-  create(dto: CreateAdminDto): Promise<Admin> {
-    const admin = this.adminRepository.create(dto);
+  async create(dto: CreateAdminDto): Promise<Admin> {
+    const data = { ...dto };
+    if (data.password) {
+      data.password = await bcrypt.hash(data.password, 10);
+    }
+    const admin = this.adminRepository.create(data);
     return this.adminRepository.save(admin);
+  }
+
+  findByEmail(email: string): Promise<Admin | null> {
+    return this.adminRepository.findOne({ where: { email } });
   }
 
   findAll(): Promise<Admin[]> {
@@ -36,7 +45,11 @@ export class AdminService {
 
   async update(admin_id: number, dto: UpdateAdminDto): Promise<Admin> {
     const admin = await this.findOne(admin_id);
-    Object.assign(admin, dto);
+    const data = { ...dto };
+    if (data.password) {
+      data.password = await bcrypt.hash(data.password, 10);
+    }
+    Object.assign(admin, data);
     return this.adminRepository.save(admin);
   }
 

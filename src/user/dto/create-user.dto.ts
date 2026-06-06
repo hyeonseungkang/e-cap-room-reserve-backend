@@ -8,6 +8,9 @@ export class CreateUserDto {
   email: string;
 
   @ApiProperty()
+  password?: string;
+
+  @ApiProperty()
   department?: string;
 
   @ApiProperty()
@@ -15,4 +18,7 @@ export class CreateUserDto {
 
   @ApiProperty()
   role?: string;
+
+  @ApiProperty()
+  is_active?: number;
 }

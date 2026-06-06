@@ -8,6 +8,9 @@ export class UpdateUserDto {
   email?: string;
 
   @ApiProperty()
+  password?: string;
+
+  @ApiProperty()
   department?: string;
 
   @ApiProperty()
@@ -15,4 +18,7 @@ export class UpdateUserDto {
 
   @ApiProperty()
   role?: string;
+
+  @ApiProperty()
+  is_active?: number;
 }

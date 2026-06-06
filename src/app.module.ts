@@ -27,6 +27,7 @@ import { CancellationLogModule } from './cancellation-log/cancellation-log.modul
 import { QnaModule } from './qna/qna.module';
 import { MaintenanceModule } from './maintenance/maintenance.module';
 import { UppercaseNamingStrategy } from './config/uppercase-naming.strategy';
+import { GuardModule } from './guard/guard.module';
 
 @Module({
   imports: [
@@ -64,6 +65,7 @@ import { UppercaseNamingStrategy } from './config/uppercase-naming.strategy';
     }),
     ScheduleModule.forRoot(),
     AuthModule,
+    GuardModule,
   ],
   controllers: [AppController],
   providers: [AppService],

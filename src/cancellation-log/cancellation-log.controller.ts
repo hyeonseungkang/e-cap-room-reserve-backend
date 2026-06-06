@@ -7,10 +7,12 @@ import {
   Param,
   Body,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { CancellationLogService } from './cancellation-log.service';
 import { CreateCancellationLogDto } from './dto/create-cancellation-log.dto';
 import { UpdateCancellationLogDto } from './dto/update-cancellation-log.dto';
+import { UserGuard } from '../guard/user.guard';
 
 @Controller('cancellation-log')
 export class CancellationLogController {
@@ -19,6 +21,7 @@ export class CancellationLogController {
   ) {}
 
   @Post()
+  @UseGuards(UserGuard)
   create(@Body() dto: CreateCancellationLogDto) {
     return this.cancellationLogService.create(dto);
   }
@@ -41,6 +44,7 @@ export class CancellationLogController {
   }
 
   @Patch(':id')
+  @UseGuards(UserGuard)
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateCancellationLogDto,
@@ -49,6 +53,7 @@ export class CancellationLogController {
   }
 
   @Delete(':id')
+  @UseGuards(UserGuard)
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.cancellationLogService.remove(id);
   }

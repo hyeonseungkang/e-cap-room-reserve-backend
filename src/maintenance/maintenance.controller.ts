@@ -7,16 +7,19 @@ import {
   Param,
   Body,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { MaintenanceService } from './maintenance.service';
 import { CreateMaintenanceLogDto } from './dto/create-maintenance-log.dto';
 import { UpdateMaintenanceLogDto } from './dto/update-maintenance-log.dto';
+import { AdminGuard } from '../guard/admin.guard';
 
 @Controller('maintenance')
 export class MaintenanceController {
   constructor(private readonly maintenanceService: MaintenanceService) {}
 
   @Post()
+  @UseGuards(AdminGuard)
   create(@Body() dto: CreateMaintenanceLogDto) {
     return this.maintenanceService.create(dto);
   }
@@ -37,6 +40,7 @@ export class MaintenanceController {
   }
 
   @Patch(':id')
+  @UseGuards(AdminGuard)
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateMaintenanceLogDto,
@@ -45,6 +49,7 @@ export class MaintenanceController {
   }
 
   @Delete(':id')
+  @UseGuards(AdminGuard)
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.maintenanceService.remove(id);
   }

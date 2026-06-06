@@ -7,12 +7,15 @@ import {
   Param,
   Body,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
+import { AdminGuard } from '../guard/admin.guard';
+import { UserGuard } from '../guard/user.guard';
 
 @Controller('user')
 export class UserController {
@@ -21,6 +24,7 @@ export class UserController {
   // ── User CRUD ──────────────────────────────────────────────────────────────
 
   @Post()
+  @UseGuards(AdminGuard)
   create(@Body() dto: CreateUserDto) {
     return this.userService.create(dto);
   }
@@ -36,11 +40,13 @@ export class UserController {
   }
 
   @Patch(':id')
+  @UseGuards(AdminGuard)
   update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateUserDto) {
     return this.userService.update(id, dto);
   }
 
   @Delete(':id')
+  @UseGuards(AdminGuard)
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.userService.remove(id);
   }
@@ -48,6 +54,7 @@ export class UserController {
   // ── Reservation CRUD ───────────────────────────────────────────────────────
 
   @Post(':userId/reservations')
+  @UseGuards(UserGuard)
   createReservation(
     @Param('userId', ParseIntPipe) userId: number,
     @Body() dto: CreateReservationDto,
@@ -68,6 +75,7 @@ export class UserController {
   }
 
   @Patch('reservations/:reservationId')
+  @UseGuards(UserGuard)
   updateReservation(
     @Param('reservationId', ParseIntPipe) reservationId: number,
     @Body() dto: UpdateReservationDto,
@@ -76,6 +84,7 @@ export class UserController {
   }
 
   @Delete('reservations/:reservationId')
+  @UseGuards(UserGuard)
   removeReservation(
     @Param('reservationId', ParseIntPipe) reservationId: number,
   ) {

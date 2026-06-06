@@ -7,16 +7,19 @@ import {
   Param,
   Body,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { UsageLogService } from './usage-log.service';
 import { CreateUsageLogDto } from './dto/create-usage-log.dto';
 import { UpdateUsageLogDto } from './dto/update-usage-log.dto';
+import { AdminGuard } from '../guard/admin.guard';
 
 @Controller('usage-log')
 export class UsageLogController {
   constructor(private readonly usageLogService: UsageLogService) {}
 
   @Post()
+  @UseGuards(AdminGuard)
   create(@Body() dto: CreateUsageLogDto) {
     return this.usageLogService.create(dto);
   }
@@ -39,6 +42,7 @@ export class UsageLogController {
   }
 
   @Patch(':id')
+  @UseGuards(AdminGuard)
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateUsageLogDto,
@@ -47,6 +51,7 @@ export class UsageLogController {
   }
 
   @Delete(':id')
+  @UseGuards(AdminGuard)
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.usageLogService.remove(id);
   }

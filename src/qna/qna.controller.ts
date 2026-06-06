@@ -7,6 +7,7 @@ import {
   Param,
   Body,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { QnaService } from './qna.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
@@ -14,6 +15,8 @@ import { UpdateQuestionDto } from './dto/update-question.dto';
 import { CreateAnswerDto } from './dto/create-answer.dto';
 import { UpdateAnswerDto } from './dto/update-answer.dto';
 import { CreateQnaMappingDto } from './dto/create-qna-mapping.dto';
+import { AdminGuard } from '../guard/admin.guard';
+import { UserGuard } from '../guard/user.guard';
 
 @Controller('qna')
 export class QnaController {
@@ -22,6 +25,7 @@ export class QnaController {
   // ── Questions ──────────────────────────────────────────────────────────────
 
   @Post('questions')
+  @UseGuards(UserGuard)
   createQuestion(@Body() dto: CreateQuestionDto) {
     return this.qnaService.createQuestion(dto);
   }
@@ -37,6 +41,7 @@ export class QnaController {
   }
 
   @Patch('questions/:id')
+  @UseGuards(UserGuard)
   updateQuestion(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateQuestionDto,
@@ -45,6 +50,7 @@ export class QnaController {
   }
 
   @Delete('questions/:id')
+  @UseGuards(UserGuard)
   removeQuestion(@Param('id', ParseIntPipe) id: number) {
     return this.qnaService.removeQuestion(id);
   }
@@ -52,6 +58,7 @@ export class QnaController {
   // ── Answers ────────────────────────────────────────────────────────────────
 
   @Post('answers')
+  @UseGuards(AdminGuard)
   createAnswer(@Body() dto: CreateAnswerDto) {
     return this.qnaService.createAnswer(dto);
   }
@@ -67,6 +74,7 @@ export class QnaController {
   }
 
   @Patch('answers/:id')
+  @UseGuards(AdminGuard)
   updateAnswer(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateAnswerDto,
@@ -75,6 +83,7 @@ export class QnaController {
   }
 
   @Delete('answers/:id')
+  @UseGuards(AdminGuard)
   removeAnswer(@Param('id', ParseIntPipe) id: number) {
     return this.qnaService.removeAnswer(id);
   }
@@ -82,6 +91,7 @@ export class QnaController {
   // ── QnaMappings ────────────────────────────────────────────────────────────
 
   @Post('mappings')
+  @UseGuards(AdminGuard)
   createMapping(@Body() dto: CreateQnaMappingDto) {
     return this.qnaService.createMapping(dto);
   }
@@ -97,13 +107,12 @@ export class QnaController {
   }
 
   @Get('mappings/question/:questionId')
-  findMappingByQuestion(
-    @Param('questionId', ParseIntPipe) questionId: number,
-  ) {
+  findMappingByQuestion(@Param('questionId', ParseIntPipe) questionId: number) {
     return this.qnaService.findMappingByQuestion(questionId);
   }
 
   @Delete('mappings/:id')
+  @UseGuards(AdminGuard)
   removeMapping(@Param('id', ParseIntPipe) id: number) {
     return this.qnaService.removeMapping(id);
   }

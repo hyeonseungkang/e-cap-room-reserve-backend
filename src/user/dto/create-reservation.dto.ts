@@ -8,6 +8,9 @@ export class CreateReservationDto {
   end_time: Date;
 
   @ApiProperty()
+  participant_count?: number;
+
+  @ApiProperty()
   purpose?: string;
 
   @ApiProperty()

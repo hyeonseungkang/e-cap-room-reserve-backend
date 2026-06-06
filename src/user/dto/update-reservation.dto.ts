@@ -8,6 +8,9 @@ export class UpdateReservationDto {
   end_time?: Date;
 
   @ApiProperty()
+  participant_count?: number;
+
+  @ApiProperty()
   purpose?: string;
 
   @ApiProperty()

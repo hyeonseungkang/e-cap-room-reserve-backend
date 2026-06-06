@@ -4,15 +4,18 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UserModule } from '../user/user.module';
 import { AdminModule } from '../admin/admin.module';
-import { GuardModule } from '../guard/guard.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     UserModule,
     AdminModule,
-    JwtModule.register({
-      secret: process.env.JWT_SECRET ?? 'ecap-secret',
-      signOptions: { expiresIn: '7d' },
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: () => ({
+        secret: process.env.JWT_CONSTRAINTS,
+        signOptions: { expiresIn: '7d' },
+      }),
     }),
   ],
   providers: [AuthService],

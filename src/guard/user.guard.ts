@@ -19,7 +19,7 @@ export class UserGuard implements CanActivate {
     const request = context.switchToHttp().getRequest<Request>();
     try {
       const payload = this.jwtService.verify<Payload>(
-        String(request.headers['Authorization']),
+        String(request.headers['authorization']),
       );
       if (payload.type === 'user' || payload.type === 'admin') {
         return true;

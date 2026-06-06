@@ -19,12 +19,12 @@ export class AdminGuard implements CanActivate {
     const request = context.switchToHttp().getRequest<Request>();
     try {
       const payload = this.jwtService.verify<Payload>(
-        String(request.headers['Authorization']),
+        String(request.headers['authorization']),
       );
       if (payload.type === 'admin') {
         return true;
       }
-    } catch {
+    } catch (e) {
       throw new UnauthorizedException('관리자 이상의 권한이 필요합니다.');
     }
     return false;

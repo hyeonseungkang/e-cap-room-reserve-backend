@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { Reservation } from './reservation.entity';
 
-@Entity('users')
+@Entity('USERS')
 export class User {
   @PrimaryGeneratedColumn('increment')
   user_id: number;
@@ -19,6 +19,9 @@ export class User {
   email: string;
 
   @Column({ length: 100, nullable: true })
+  password: string;
+
+  @Column({ length: 100, nullable: true })
   department: string;
 
   @Column({ length: 20, nullable: true })
@@ -27,10 +30,12 @@ export class User {
   @Column({ length: 20, default: 'USER' })
   role: string;
 
+  @Column({ type: 'int', default: 1 })
+  is_active: number;
+
   @CreateDateColumn()
   created_at: Date;
 
-  // 1:N 관계 (사용자는 여러 예약을 가질 수 있음)
   @OneToMany(() => Reservation, (reservation) => reservation.user)
   reservations: Reservation[];
 }

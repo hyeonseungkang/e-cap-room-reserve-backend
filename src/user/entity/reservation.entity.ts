@@ -10,17 +10,20 @@ import {
 import { User } from './user.entity';
 import { MeetingRoom } from '../../meeting-room/entity/meeting-room.entity';
 
-@Entity('reservations')
-@Check(`"end_time" > "start_time"`) // SQL의 CHECK 제약 조건 반영
+@Entity('RESERVATIONS')
+@Check(`"end_time" > "start_time"`)
 export class Reservation {
   @PrimaryGeneratedColumn('increment')
   reservation_id: number;
 
-  @Column({ type: 'datetime' })
+  @Column({ type: 'timestamp' })
   start_time: Date;
 
-  @Column({ type: 'datetime' })
+  @Column({ type: 'timestamp' })
   end_time: Date;
+
+  @Column({ nullable: true })
+  participant_count: number;
 
   @Column({ length: 255, nullable: true })
   purpose: string;
@@ -31,12 +34,10 @@ export class Reservation {
   @CreateDateColumn()
   created_at: Date;
 
-  // N:1 관계 (여러 예약은 한 명의 사용자에게 속함)
   @ManyToOne(() => User, (user) => user.reservations, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  // N:1 관계 (여러 예약은 하나의 회의실에 속함)
   @ManyToOne(() => MeetingRoom, (room) => room.reservations, {
     onDelete: 'CASCADE',
   })

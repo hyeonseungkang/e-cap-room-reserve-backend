@@ -10,7 +10,7 @@ import { RoomEquipment } from './room-equipment.entity';
 import { Reservation } from '../../user/entity/reservation.entity';
 import { Admin } from '../../admin/entity/admin.entity';
 
-@Entity('meeting_rooms')
+@Entity('MEETING_ROOMS')
 export class MeetingRoom {
   @PrimaryGeneratedColumn('increment')
   room_id: number;

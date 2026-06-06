@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { MeetingRoom } from './meeting-room.entity';
 
-@Entity('room_equipment')
+@Entity('ROOM_EQUIPMENT')
 export class RoomEquipment {
   @PrimaryGeneratedColumn('increment')
   equipment_id: number;

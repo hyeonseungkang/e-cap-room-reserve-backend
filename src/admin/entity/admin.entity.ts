@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { MeetingRoom } from '../../meeting-room/entity/meeting-room.entity';
 
-@Entity('admins')
+@Entity('ADMINS')
 export class Admin {
   @PrimaryGeneratedColumn('increment')
   admin_id: number;
@@ -19,12 +19,17 @@ export class Admin {
   email: string;
 
   @Column({ length: 100, nullable: true })
+  password: string;
+
+  @Column({ length: 100, nullable: true })
   department: string;
+
+  @Column({ type: 'int', default: 1 })
+  is_active: number;
 
   @CreateDateColumn()
   created_at: Date;
 
-  // 1:N 관계 (관리자는 여러 회의실을 관리할 수 있음)
   @OneToMany(() => MeetingRoom, (room) => room.admin)
   rooms: MeetingRoom[];
 }

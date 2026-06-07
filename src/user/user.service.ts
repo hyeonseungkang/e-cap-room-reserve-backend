@@ -14,6 +14,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { Cron } from '@nestjs/schedule';
+import { PenaltyService } from 'src/penalty/penalty.service';
 
 @Injectable()
 export class UserService {
@@ -22,6 +23,7 @@ export class UserService {
     private readonly userRepository: Repository<User>,
     @InjectRepository(Reservation)
     private readonly reservationRepository: Repository<Reservation>,
+    private readonly penaltyService: PenaltyService,
   ) {}
 
   // ── User CRUD ──────────────────────────────────────────────────────────────
@@ -92,6 +94,15 @@ export class UserService {
       throw new BadRequestException(
         '선택하신 시간대에 이미 회의실이 예약되어 있습니다.',
       );
+    }
+    const panaltyHistories =
+      await this.penaltyService.findHistoriesByUser(user_id);
+    for (const history of panaltyHistories) {
+      if (history.end_date > new Date()) {
+        throw new BadRequestException(
+          '현재 예약이 제한된 상태입니다. 자세한 사항은 패널티 내역을 확인해주세요.',
+        );
+      }
     }
     const reservation = this.reservationRepository.create({
       ...dto,

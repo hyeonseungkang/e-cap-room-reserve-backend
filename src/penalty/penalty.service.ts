@@ -86,6 +86,13 @@ export class PenaltyService {
     return history;
   }
 
+  findHistoriesByUser(user_id: number): Promise<PenaltyHistory[]> {
+    return this.historyRepository.find({
+      where: { reservation: { user: { user_id } } },
+      relations: ['reservation'],
+    });
+  }
+
   findHistoriesByReservation(
     reservation_id: number,
   ): Promise<PenaltyHistory[]> {

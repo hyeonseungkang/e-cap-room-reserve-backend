@@ -5,11 +5,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Reservation } from './entity/reservation.entity';
 import { User } from './entity/user.entity';
 import { GuardModule } from '../guard/guard.module';
+import { PenaltyModule } from 'src/penalty/penalty.module';
 
 @Module({
   providers: [UserService],
   controllers: [UserController],
-  imports: [TypeOrmModule.forFeature([Reservation, User]), GuardModule],
+  imports: [
+    TypeOrmModule.forFeature([Reservation, User]),
+    GuardModule,
+    PenaltyModule,
+  ],
   exports: [UserService],
 })
 export class UserModule {}

@@ -4,7 +4,13 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { MoreThanOrEqual, LessThanOrEqual, Repository, Not, Or } from 'typeorm';
+import {
+  MoreThanOrEqual,
+  LessThanOrEqual,
+  Repository,
+  Not,
+  Raw,
+} from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { User } from './entity/user.entity';
 import { Reservation } from './entity/reservation.entity';
@@ -181,7 +187,7 @@ export class UserService {
     return this.reservationRepository.update(
       {
         reservation_status: 'RESERVED',
-        end_time: LessThanOrEqual(new Date()),
+        end_time: Raw((alias) => `${alias} <= current_timestamp`),
       },
       {
         reservation_status: 'COMPLETED',

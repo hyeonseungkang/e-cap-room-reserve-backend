@@ -6,6 +6,7 @@ import { Reservation } from './entity/reservation.entity';
 import { User } from './entity/user.entity';
 import { GuardModule } from '../guard/guard.module';
 import { PenaltyModule } from 'src/penalty/penalty.module';
+import { MeetingRoomModule } from 'src/meeting-room/meeting-room.module';
 
 @Module({
   providers: [UserService],
@@ -14,6 +15,7 @@ import { PenaltyModule } from 'src/penalty/penalty.module';
     TypeOrmModule.forFeature([Reservation, User]),
     GuardModule,
     PenaltyModule,
+    MeetingRoomModule,
   ],
   exports: [UserService],
 })

@@ -15,6 +15,7 @@ import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { Cron } from '@nestjs/schedule';
 import { PenaltyService } from 'src/penalty/penalty.service';
+import { MeetingRoomService } from 'src/meeting-room/meeting-room.service';
 
 @Injectable()
 export class UserService {
@@ -24,6 +25,7 @@ export class UserService {
     @InjectRepository(Reservation)
     private readonly reservationRepository: Repository<Reservation>,
     private readonly penaltyService: PenaltyService,
+    private readonly meetingRoomService: MeetingRoomService,
   ) {}
 
   // ── User CRUD ──────────────────────────────────────────────────────────────
@@ -103,6 +105,15 @@ export class UserService {
           '현재 예약이 제한된 상태입니다. 자세한 사항은 패널티 내역을 확인해주세요.',
         );
       }
+    }
+    const meetingRoom = await this.meetingRoomService.findOne(dto.room_id);
+    if (
+      Number(dto.participant_count || 0) < 1 ||
+      meetingRoom.capacity < Number(dto.participant_count || 999)
+    ) {
+      throw new BadRequestException(
+        '참여 인원 수가 회의실의 수용 인원 범위를 벗어났습니다.',
+      );
     }
     const reservation = this.reservationRepository.create({
       ...dto,
